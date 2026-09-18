@@ -30,8 +30,8 @@ if (-not (Test-Path $uploadsDir)) { New-Item -ItemType Directory -Path $uploadsD
 if (-not (Test-Path $blogsUploadsDir)) { New-Item -ItemType Directory -Path $blogsUploadsDir | Out-Null }
 
 $adminTokenSecret = "PropVigil_Secret_Auth_Token_2026"
-$adminUsername = "admin"
-$adminPassword = "PropVigil2026!" # Default admin password
+$adminUsername = "Apoorva@Propvigil"
+$adminPassword = "Apporva@1706"
 
 $mimeTypes = @{
     ".html" = "text/html; charset=utf-8"

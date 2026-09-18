@@ -937,7 +937,7 @@ function initAdminPortal() {
       } catch (err) {}
 
       // Fallback check
-      if (username === 'admin' && password === 'PropVigil2026!') {
+      if (username === 'Apoorva@Propvigil' && password === 'Apporva@1706') {
         sessionStorage.setItem('propvigil_admin_token', 'local_secret_token');
         showDashboard();
       } else {
