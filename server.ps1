@@ -645,6 +645,29 @@ try {
                     }
                     Set-Content -Path $contactLogFile -Value $cJsonStr -Encoding UTF8
 
+                    # Async dispatch to Google Sheets Intake Webhook (Spreadsheet ID: 1YcITIKji8K8e4g75OdVLcK5PQfsBqd5XLjwxlnmJme0)
+                    try {
+                        $gsUrl = "https://script.google.com/macros/s/AKfycbxLfFZS6o-9UxAwkkt9JMkOZsUy6bJW2C7jQvIoPXX8FRzQyu64tWqb6OLTliQ039NPfA/exec"
+                        $gsPayload = @{
+                            name = $contactRecord.name
+                            phone = $contactRecord.phone
+                            prop_type = $contactRecord.prop_type
+                            location = $contactRecord.location
+                            size = $contactRecord.size
+                            notes = $contactRecord.notes
+                            status = "New"
+                        } | ConvertTo-Json -Compress
+
+                        [System.Threading.Tasks.Task]::Run([Action]{
+                            try {
+                                $wc = New-Object System.Net.WebClient
+                                $wc.Headers.Add("Content-Type", "application/json")
+                                $wc.UploadString($gsUrl, "POST", $gsPayload) | Out-Null
+                                $wc.Dispose()
+                            } catch {}
+                        }) | Out-Null
+                    } catch {}
+
                     Write-Host " [CONTACT FORM API] Submission received from: $($contactData.name) ($($contactData.phone)) for $($contactData.location)" -ForegroundColor Yellow
                     Write-JsonResponse $response 200 @{ 
                         success = $true; 

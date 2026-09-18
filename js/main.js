@@ -428,6 +428,9 @@ function escapeHtml(str) {
   return String(str).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
 }
 
+// Google Sheets Webhook Endpoint for Property Intake Form (Spreadsheet ID: 1YcITIKji8K8e4g75OdVLcK5PQfsBqd5XLjwxlnmJme0 / Sheet1)
+const GOOGLE_SHEETS_INTAKE_URL = window.PROPVIGIL_GSHEET_WEBHOOK_URL || 'https://script.google.com/macros/s/AKfycbxLfFZS6o-9UxAwkkt9JMkOZsUy6bJW2C7jQvIoPXX8FRzQyu64tWqb6OLTliQ039NPfA/exec';
+
 // Form Submission & Contact API Handler (6 Fields, Email & WhatsApp Support)
 function initFormHandler() {
   const forms = document.querySelectorAll('.propvigil-intake-form, #callback-form');
@@ -473,7 +476,32 @@ function initFormHandler() {
       submitted_at: new Date().toISOString()
     };
 
-    // 1. Dispatch to local backend API
+    // 1. Dispatch directly to Google Sheets Intake Webhook (Spreadsheet ID: 1YcITIKji8K8e4g75OdVLcK5PQfsBqd5XLjwxlnmJme0 -> Sheet1)
+    try {
+      const gsheetPayload = {
+        timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
+        name: name,
+        phone: phone,
+        prop_type: propType,
+        location: location,
+        size: size,
+        notes: notes,
+        status: 'New'
+      };
+
+      fetch(GOOGLE_SHEETS_INTAKE_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'text/plain;charset=utf-8'
+        },
+        body: JSON.stringify(gsheetPayload)
+      }).catch(err => console.log('Google Sheets dispatch background notification:', err));
+    } catch (gsErr) {
+      console.log('Google Sheets dispatch error:', gsErr);
+    }
+
+    // 2. Dispatch to local backend API
     try {
       fetch(getApiUrl('/api/contact'), {
         method: 'POST',
