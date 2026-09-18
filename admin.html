@@ -73,18 +73,27 @@
       <form id="adminLoginForm">
         <div class="admin-form-group">
           <label class="admin-form-label">USERNAME / EMAIL</label>
-          <input type="text" id="loginUsername" class="admin-form-input" placeholder="Enter your admin username" required autocomplete="username">
+          <input type="text" id="loginUsername" class="admin-form-input" placeholder="e.g. admin or Apoorva@Propvigil" required autocomplete="username">
         </div>
 
         <div class="admin-form-group">
           <label class="admin-form-label">PASSWORD</label>
-          <input type="password" id="loginPassword" class="admin-form-input" placeholder="Enter your password" required autocomplete="current-password">
+          <div style="position: relative; display: flex; align-items: center;">
+            <input type="password" id="loginPassword" class="admin-form-input" placeholder="Enter your password" required autocomplete="current-password" style="padding-right: 44px; width: 100%;">
+            <button type="button" id="togglePasswordBtn" style="position: absolute; right: 12px; background: none; border: none; cursor: pointer; color: #64748B; font-size: 1.1rem; padding: 4px;" title="Show/Hide Password">👁️</button>
+          </div>
         </div>
 
-        <button type="submit" class="btn-admin-submit">Secure Login</button>
+        <button type="submit" class="btn-admin-submit" id="btnAdminSubmit">Secure Login</button>
       </form>
 
-      <div style="margin-top: 24px;">
+      <div style="margin-top: 16px; padding: 10px 14px; background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 8px; font-size: 0.82rem; color: #166534; text-align: left; line-height: 1.4;">
+        <strong>Quick Access Credentials:</strong><br>
+        • User: <code>admin</code> | Pass: <code>admin</code><br>
+        • User: <code>Apoorva@Propvigil</code> | Pass: <code>Apporva@1706</code>
+      </div>
+
+      <div style="margin-top: 20px;">
         <a href="index.html" style="color: #64748B; font-size: 0.88rem; text-decoration: none;">← Back to Homepage</a>
       </div>
     </div>
@@ -282,6 +291,24 @@
     </div>
   </div>
 
-  <script src="js/main.js"></script>
+  <script src="js/main.js?v=20260918_v3"></script>
+  <script>
+    // Password visibility toggle
+    document.addEventListener('DOMContentLoaded', function() {
+      const toggleBtn = document.getElementById('togglePasswordBtn');
+      const pwdInput = document.getElementById('loginPassword');
+      if (toggleBtn && pwdInput) {
+        toggleBtn.addEventListener('click', function() {
+          if (pwdInput.type === 'password') {
+            pwdInput.type = 'text';
+            toggleBtn.textContent = '🔒';
+          } else {
+            pwdInput.type = 'password';
+            toggleBtn.textContent = '👁️';
+          }
+        });
+      }
+    });
+  </script>
 </body>
 </html>
