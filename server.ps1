@@ -31,7 +31,7 @@ if (-not (Test-Path $blogsUploadsDir)) { New-Item -ItemType Directory -Path $blo
 
 $adminTokenSecret = "PropVigil_Secret_Auth_Token_2026"
 $adminUsername = "Apoorva@Propvigil"
-$adminPassword = "Apporva@1706"
+$adminPassword = "Apoorva@1706"
 
 $mimeTypes = @{
     ".html" = "text/html; charset=utf-8"
